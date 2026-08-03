@@ -1,0 +1,17 @@
+# Web Framework for the Core Server and Mock Dispatcher endpoint
+fastapi==0.110.0
+uvicorn==0.29.0
+
+# Caspian SDK (Unified Agent Communication Layer)
+# Replaces python-telegram-bot and discord.py by handling all messaging channels out of the box.
+caspian-sdk
+
+# Environment variables management (for API keys and tokens)
+python-dotenv==1.0.1
+
+# HTTP Client for making requests to mock endpoints or external APIs
+httpx>=0.28.0
+requests==2.31.0
+
+# LLM Integration: Groq for fast inference, text/location extraction and NLP parsing
+groq==0.4.2
