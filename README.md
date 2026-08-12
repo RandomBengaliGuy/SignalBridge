@@ -71,7 +71,7 @@ flowchart LR
 Because no single channel serves all three roles (Victims, Dispatchers, Interpreters), SignalBridge unifies them.
 
 ### 1. The Victim (Intake via Telegram)
-<img src="INSERT_TELEGRAM_IMAGE_URL_HERE" align="right" width="250">
+<img src="https://github.com/user-attachments/assets/6a79e1b5-23c2-4f4d-b610-86ea591354cb" align="right" width="250">
 The person in distress messages the SignalBridge Telegram bot. They use a simple, accessible interface they already use daily. If no location is provided, the system initiates a 15-second countdown requesting a Google Maps link.
 <br><br>
 
