@@ -68,27 +68,44 @@ flowchart LR
 
 ## Platform-by-Platform Integration
 
-Because no single channel serves all three roles (Victims, Dispatchers, Interpreters), SignalBridge unifies them.
+Because no single channel serves all three roles (Victims, Dispatchers, Interpreters), SignalBridge unifies them across 5 distinct mediums:
+<br>
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <strong>Platform: Telegram</strong><br>
+        <img src="https://github.com/user-attachments/assets/1888f593-451f-4ddc-a2c2-221659edb71f" width="170">
+      </td>
+      <td align="center">
+        <strong>Platform: Slack</strong><br>
+        <img src="https://github.com/user-attachments/assets/167626ae-a3ac-4e8c-b7cf-e2f46476e351" width="170">
+      </td>
+      <td align="center">
+        <strong>Platform: Discord</strong><br>
+        <img src="https://github.com/user-attachments/assets/8a3ccac0-d946-4aae-8ed7-19f7f0d1faff" width="170">
+      </td>
+      <td align="center">
+        <strong>Platform: Email</strong><br>
+        <img src="https://github.com/user-attachments/assets/24c77bd1-6531-42ad-9fed-812355865dc7" width="170">
+      </td>
+      <td align="center">
+        <strong>Platform: SMS</strong><br>
+        <img src="https://github.com/user-attachments/assets/f6da946c-0f86-4036-a672-8dfe6c49b2d4" width="170">
+      </td>
+    </tr>
+  </table>
+</div>
+<br>
 
 ### 1. The Victim (Intake via Telegram)
-<img src="https://github.com/user-attachments/assets/6a79e1b5-23c2-4f4d-b610-86ea591354cb" align="right" width="250">
 The person in distress messages the SignalBridge Telegram bot. They use a simple, accessible interface they already use daily. If no location is provided, the system initiates a 15-second countdown requesting a Google Maps link.
-<br><br>
-
 ### 2. 911 Dispatchers (Slack Integration)
-<img src="INSERT_SLACK_IMAGE_URL_HERE" align="right" width="250">
 Emergency services require structured, formal, rich-data reporting. Our AI instantly formats the panic text into a clean Dispatch Card detailing coordinates, nature, and severity. The dispatcher can click a button to acknowledge the alert.
-<br><br>
-
 ### 3. Volunteer Interpreters (Discord Bridge)
-<img src="INSERT_DISCORD_IMAGE_URL_HERE" align="right" width="250">
 Specialized volunteers organize on community platforms like Discord. SignalBridge pings the volunteer channel requesting assistance. When a volunteer types `accept_relay:<id>`, SignalBridge establishes a **live, real-time two-way bridge** between Discord and the victim's Telegram.
-<br><br>
-
 ### 4. Family Notifications (Email & SMS)
-<img src="INSERT_EMAIL_SMS_IMAGE_URL_HERE" align="right" width="250">
 Family members linked to the victim's account instantly receive offline alerts containing the exact coordinates and severity of the emergency.
-<br><br>
 
 > **SMS Infrastructure Note (Hackathon Constraints)**: 
 > SignalBridge features a robust, hybrid SMS architecture. Out of the box, we safely mock outbound SMS alerts in the terminal to avoid strict international telecom regulations (like India's TRAI/DLT) which block programmatic SMS to local numbers without extensive corporate KYC and registration. 
