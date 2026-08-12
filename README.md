@@ -20,6 +20,31 @@ Accessibility ideas often stop at "a chat interface for the deaf." **The true in
 
 ---
 
+## Key Features & Technical Highlights
+
+SignalBridge isn't just a basic chatbot; it is a highly resilient, async-driven emergency routing engine packed with intelligent features:
+
+- **Auto-Dispatch Fail-Safe**: If a victim triggers an SOS but goes unresponsive before providing a location, the system initiates a 15-second visual countdown timer. If no location is provided in time, it automatically dispatches emergency services with an "Unknown" location to ensure help is still sent.
+  
+- **Triple-Redundant Location Parsing**:
+  1. **Smart Text**: If the user types *"I am at IIT Guwahati"*, our backend automatically queries the OpenStreetMap Geocoding API to convert it to precise Latitude/Longitude coordinates.
+  2. **Link Extraction**: If they paste a Google Maps link, we parse the raw URL to extract the coordinates.
+  3. **Native Pins**: It fully supports native Telegram Live Location pins.
+     
+- **Multilingual Voice Note Intake**: In a panic, typing is hard. Victims can simply send a voice note (in almost any language). SignalBridge downloads the audio buffer, processes it through Groq's blazing-fast transcription layer, and instantly extracts the emergency context.
+  
+- **Live Volunteer Relay Bridge**: Dispatchers don't have time to stay on the line and comfort the victim. Our system opens a live, two-way bridge between community volunteers (in Discord) and the victim (in Telegram). The raw messages from the volunteer are seamlessly forwarded to the victim to keep them calm while units arrive.
+  
+- **Powered by Caspian SDK**: Building a 5-platform omnichannel application in 15 days is usually impossible due to the nightmare of managing five different API webhooks, OAuth flows, and formatting rules. The **Caspian SDK** was the absolute superpower of this project. By abstracting the communication layer, Caspian allowed us to write a single `bot_client.py` file that effortlessly routes complex, rich-text objects to Telegram, Slack, Discord, SMS, and Email simultaneously.
+
+- **Server Crash Recovery**: Real-world emergency systems cannot afford downtime. SignalBridge utilizes a FastAPI lifespan event tied to its SQLite database. If the server loses power or crashes *while* a victim is in the middle of a 15-second location countdown, the system will detect the "orphaned" emergency upon reboot and instantly auto-dispatch it to ensure the alert isn't lost in the void.
+  
+- **Secure Authorization Gateway**: To prevent spam attacks from triggering fake 911 dispatches, the intake bot is fully private. Users must authenticate with a secure passphrase before the system unlocks. Once authorized, users can dynamically link new family Telegram groups, emails, and phone numbers entirely through chat commands (e.g., `/addemail`).
+  
+- **Zero-Latency Groq Triage**: In an emergency, every millisecond counts. Instead of relying on traditional, slower cloud LLMs, SignalBridge routes unstructured panic texts through Groq's LPU (Language Processing Unit) inference engine, resulting in near-instantaneous entity extraction (Nature, Severity, Location) with zero lag.
+
+---
+
 ##  The Solution & Architecture
 
 SignalBridge is an intelligent triage platform that acts as a central hub. It uses ultra-fast LLMs to extract emergency contexts and instantly routes the data across multiple platforms simultaneously.
