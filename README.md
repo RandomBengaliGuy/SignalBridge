@@ -1,4 +1,4 @@
-# 🚨 SignalBridge
+# SignalBridge
 
 <div align="center">
   <strong>An Omnichannel, AI-Powered Emergency Relay for the Deaf and Hard-of-Hearing</strong><br>
@@ -7,12 +7,12 @@
 <br>
 
 <div align="center">
-  <a href="INSERT_DEMO_VIDEO_LINK_HERE"><strong>🎥 Watch the Full Demo Video Here</strong></a>
+  <a href="INSERT_DEMO_VIDEO_LINK_HERE"><strong>  Watch the Full Demo Video Here</strong></a>
 </div>
 
 ---
 
-## 📖 The Problem
+## The Problem
 
 Deaf and hard-of-hearing individuals often cannot use voice-based emergency services (like 911) effectively. Text-to-911 support exists in patches, but it is inconsistent, slow, and lacks the ability to seamlessly coordinate live interpretation support or reliably relay context-rich information (like exact location or severity) the way a live voice call does. 
 
@@ -20,64 +20,75 @@ Accessibility ideas often stop at "a chat interface for the deaf." **The true in
 
 ---
 
-## 🚀 The Solution & Architecture
+##  The Solution & Architecture
 
 SignalBridge is an intelligent triage platform that acts as a central hub. It uses ultra-fast LLMs to extract emergency contexts and instantly routes the data across multiple platforms simultaneously.
 
 ```mermaid
-graph TD
-    %% Victim Nodes
-    Victim[Victim in Distress] -->|SOS Message| TelegramBot(SignalBridge Telegram Bot)
-    TelegramBot --> Core[SignalBridge Core API]
-    
-    %% Core Logic
-    Core -->|AI Triage| Groq[Groq LLaMA 3]
-    Groq -->|Extracted: Nature, Severity, Lat/Lon| Core
-    Core -->|Save State| DB[(SQLite Database)]
-    
-    %% Caspian Abstraction Layer
-    Core --> Caspian{Caspian SDK Abstraction Layer}
-    
-    %% Outbound Dispatch
-    Caspian -->|Webhook Integration| Slack[Slack: 911 Dispatch Center]
-    Caspian -->|Webhook Integration| Discord[Discord: Volunteer Interpreters]
-    Caspian -->|SMTP| Email[Email: Family Notification]
-    Caspian -->|Twilio Gateway| SMS[SMS: Offline Family Alerts]
-    
-    %% Live Relay Loop
-    Discord -->|Volunteer accepts relay| Core
-    Core -->|Live Two-Way Bridge| TelegramBot
+flowchart LR
+    %% Styling Classes for Caspian Theme (Vibrant Magenta/Pink)
+    classDef default fill:#1E1E2E,stroke:#FF007F,stroke-width:2px,color:#FFFFFF,rx:10,ry:10
+    classDef coreNode fill:#FF007F,stroke:#FFB3D9,stroke-width:4px,color:#FFFFFF,font-weight:bold,rx:15,ry:15
+    classDef aiNode fill:#4D0026,stroke:#FF1A8C,stroke-width:2px,color:#FFD9EC,rx:10,ry:10
+    classDef dbNode fill:#800040,stroke:#FF3399,stroke-width:2px,color:#FFFFFF,rx:10,ry:10
+    classDef routeNode fill:#260013,stroke:#FF0055,stroke-width:2px,color:#FFB3CC,stroke-dasharray: 5 5,rx:10,ry:10
+
+    %% Link Styling (Making the arrows match the theme)
+    linkStyle default stroke:#FF007F,stroke-width:2px,color:#FFB3D9
+
+    %% Intake
+    T(Telegram) -->|Voice/Text| C{Caspian Core}
+    E(Email) -->|Distress Email| C
+    SMS(SMS/Offline) -->|Distress Text| C
+
+    %% Core Processing
+    C -->|Raw Payload| AI[Groq AI Extractor]
+    AI -->|Location & Severity| DB[(Cloud PostgreSQL)]
+    DB -->|Trigger Alerts| R{Channel Router}
+
+    %% Dispatch Channels
+    R --> S[Slack 911 Dispatcher]
+    R --> D[Discord Volunteer Interpreters]
+    R --> FG[Telegram Family Groups]
+    R --> FE[Family Emails]
+    R --> FS[Family SMS Phones]
+
+    %% Bidirectional Bridges
+    D -.->|Interpreter Chat Bridged| C
+    S -.->|Status Updates Bridged| C
+
+    %% Apply Styles to specific nodes
+    class C coreNode;
+    class AI aiNode;
+    class DB dbNode;
+    class R routeNode;
 ```
 
 ---
 
-## 📱 Platform-by-Platform Integration
+## Platform-by-Platform Integration
 
 Because no single channel serves all three roles (Victims, Dispatchers, Interpreters), SignalBridge unifies them.
 
 ### 1. The Victim (Intake via Telegram)
+<img src="INSERT_TELEGRAM_IMAGE_URL_HERE" align="right" width="250">
 The person in distress messages the SignalBridge Telegram bot. They use a simple, accessible interface they already use daily. If no location is provided, the system initiates a 15-second countdown requesting a Google Maps link.
-<div align="center">
-  <em><br>📸 [Insert your MockuPhone Telegram Screenshot here]<br></em>
-</div>
+<br><br>
 
 ### 2. 911 Dispatchers (Slack Integration)
+<img src="INSERT_SLACK_IMAGE_URL_HERE" align="right" width="250">
 Emergency services require structured, formal, rich-data reporting. Our AI instantly formats the panic text into a clean Dispatch Card detailing coordinates, nature, and severity. The dispatcher can click a button to acknowledge the alert.
-<div align="center">
-  <em><br>📸 [Insert your MockuPhone Slack Screenshot here]<br></em>
-</div>
+<br><br>
 
 ### 3. Volunteer Interpreters (Discord Bridge)
+<img src="INSERT_DISCORD_IMAGE_URL_HERE" align="right" width="250">
 Specialized volunteers organize on community platforms like Discord. SignalBridge pings the volunteer channel requesting assistance. When a volunteer types `accept_relay:<id>`, SignalBridge establishes a **live, real-time two-way bridge** between Discord and the victim's Telegram.
-<div align="center">
-  <em><br>📸 [Insert your MockuPhone Discord Screenshot here]<br></em>
-</div>
+<br><br>
 
 ### 4. Family Notifications (Email & SMS)
+<img src="INSERT_EMAIL_SMS_IMAGE_URL_HERE" align="right" width="250">
 Family members linked to the victim's account instantly receive offline alerts containing the exact coordinates and severity of the emergency.
-<div align="center">
-  <em><br>📸 [Insert your MockuPhone Email/SMS Screenshot here]<br></em>
-</div>
+<br><br>
 
 > **SMS Infrastructure Note (Hackathon Constraints)**: 
 > SignalBridge features a robust, hybrid SMS architecture. Out of the box, we safely mock outbound SMS alerts in the terminal to avoid strict international telecom regulations (like India's TRAI/DLT) which block programmatic SMS to local numbers without extensive corporate KYC and registration. 
@@ -86,7 +97,7 @@ Family members linked to the victim's account instantly receive offline alerts c
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 * **Backend Core**: Python, FastAPI
 * **AI & Triage**: Groq (LLaMA 3) for lightning-fast entity extraction and natural language processing.
@@ -96,7 +107,7 @@ Family members linked to the victim's account instantly receive offline alerts c
 
 ---
 
-## 💻 Running Locally
+## Running Locally
 
 ### Prerequisites
 1. Python 3.9+
@@ -132,7 +143,7 @@ Family members linked to the victim's account instantly receive offline alerts c
 
 ---
 
-## 📜 License and Copyrights
+## License and Copyrights
 
 - **Core Application**: MIT License. See `LICENSE` for more information.
 - **Third-Party Integrations**: 
@@ -141,5 +152,4 @@ Family members linked to the victim's account instantly receive offline alerts c
 
 <br>
 <div align="center">
-  <em>Built with ❤️ for those who need to be heard.</em>
 </div>
