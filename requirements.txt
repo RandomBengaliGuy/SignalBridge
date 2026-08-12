@@ -1,0 +1,21 @@
+# Web Framework for the Core Server and endpoints
+fastapi==0.110.0
+uvicorn==0.29.0
+
+# Caspian SDK (Unified Agent Communication Layer)
+# Handles Telegram, Slack, Discord, Email, and Twilio SMS routing
+caspian-sdk
+
+# Database & ORM
+# We use SQLite (built-in) so no external drivers like psycopg2 are needed
+sqlalchemy
+pydantic
+
+# LLM Integration: Groq for fast inference, text/location extraction and NLP parsing
+groq>=1.6.0
+
+# HTTP Client for making async requests to Geocoding API and downloads
+httpx>=0.28.0
+
+# Environment variables management (for API keys and tokens)
+python-dotenv==1.0.1
