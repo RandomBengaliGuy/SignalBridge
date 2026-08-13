@@ -3,13 +3,13 @@
 <div align="center">
   <a href="INSERT_DEMO_VIDEO_LINK_HERE"><strong>Watch the Full Demo Video Here</strong></a>
   &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="https://t.me/INSERT_YOUR_BOT_USERNAME_HERE"><strong>Try the Live Telegram Bot Here!</strong></a>
+  <a href="https://t.me/caspian_signal_bridge_bot"><strong>Try the Live Telegram Bot Here!</strong></a>
 </div>
 <br>
 
 > **LIVE DEMO INSTRUCTIONS:** 
 > Because this is an emergency routing system, the bot is private to prevent spam. 
-> To test it, click the Telegram link above and send the exact message: `ClaudeCodeIsAllUNeed` to authenticate. 
+> To test it, click the Telegram link above and type `/start` and send the exact message: `ClaudeCodeIsAllUNeed` to authenticate. 
 > Once unlocked, you can type an emergency (e.g., *"I am trapped in a fire in London"*), and it will instantly route through our global command center!
 
 ---
