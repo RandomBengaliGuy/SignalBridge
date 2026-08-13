@@ -1,14 +1,16 @@
 # SignalBridge
 
 <div align="center">
-  <strong>An Omnichannel, AI-Powered Emergency Relay for the Deaf and Hard-of-Hearing</strong><br>
-  <em>Connecting Victims, Volunteers, and 911 Dispatchers across the platforms they already use.</em>
+  <a href="INSERT_DEMO_VIDEO_LINK_HERE"><strong>Watch the Full Demo Video Here</strong></a>
+  &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="https://t.me/INSERT_YOUR_BOT_USERNAME_HERE"><strong>Try the Live Telegram Bot Here!</strong></a>
 </div>
 <br>
 
-<div align="center">
-  <a href="INSERT_DEMO_VIDEO_LINK_HERE"><strong>  Watch the Full Demo Video Here</strong></a>
-</div>
+> **LIVE DEMO INSTRUCTIONS:** 
+> Because this is an emergency routing system, the bot is private to prevent spam. 
+> To test it, click the Telegram link above and send the exact message: `ClaudeCodeIsAllUNeed` to authenticate. 
+> Once unlocked, you can type an emergency (e.g., *"I am trapped in a fire in London"*), and it will instantly route through our global command center!
 
 ---
 
@@ -88,7 +90,10 @@ flowchart LR
     class DB dbNode;
     class R routeNode;
 ```
-
+> **Architecture Note (Ingestion Scope)**: 
+> The architecture diagram above represents the complete SignalBridge ecosystem. Because the Caspian SDK natively unifies all communication channels into a single `on_message` webhook, our backend is already architecturally capable of ingesting distress signals via **SMS** and **Email**. 
+>
+> However, for the scope of this Hackathon MVP—and to ensure the highest reliability during live demonstrations—we have restricted the *Inbound Ingestion* layer strictly to **Telegram**. Outbound dispatching remains fully omnichannel (Slack, Discord, Email, and SMS). Expanding inbound ingestion to offline SMS is scheduled for Phase 2.
 ---
 
 ## Platform-by-Platform Integration
@@ -142,6 +147,7 @@ Family members linked to the victim's account instantly receive offline alerts c
 ## Technology Stack
 
 * **Backend Core**: Python, FastAPI
+* **Deployment & Hosting**: Render (Cloud Application Platform)
 * **AI & Triage**: Groq (LLaMA 3) for lightning-fast entity extraction and natural language processing.
 * **Database**: SQLite & SQLAlchemy. We implemented a robust relational database schema (`database.py`, `models.py`) to persistently track User Profiles (linked family members), Emergency States (triage, dispatched, resolved), and active Relay Sessions bridging different platforms.
     > **Cloud Deployment Note**: To keep hackathon hosting costs at absolutely $0, the live demo of this bot is deployed on a free cloud tier with an *ephemeral file system*. This means the SQLite database will periodically wipe itself clean when the server restarts. This is a deliberate cost-saving choice for the demo; for a production deployment, we would simply attach a persistent block volume or swap the SQLAlchemy URL to a managed PostgreSQL cluster.
