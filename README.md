@@ -144,8 +144,19 @@ Family members linked to the victim's account instantly receive offline alerts c
 * **Backend Core**: Python, FastAPI
 * **AI & Triage**: Groq (LLaMA 3) for lightning-fast entity extraction and natural language processing.
 * **Database**: SQLite & SQLAlchemy. We implemented a robust relational database schema (`database.py`, `models.py`) to persistently track User Profiles (linked family members), Emergency States (triage, dispatched, resolved), and active Relay Sessions bridging different platforms.
+    > **Cloud Deployment Note**: To keep hackathon hosting costs at absolutely $0, the live demo of this bot is deployed on a free cloud tier with an *ephemeral file system*. This means the SQLite database will periodically wipe itself clean when the server restarts. This is a deliberate cost-saving choice for the demo; for a production deployment, we would simply attach a persistent block volume or swap the SQLAlchemy URL to a managed PostgreSQL cluster.
 * **Omnichannel Communications**: [Caspian SDK](https://trycaspianai.com/)
   * Used for cross-platform webhook abstraction, allowing a single lightweight `bot_client.py` file to seamlessly handle Telegram, Slack, Discord, and Email routing simultaneously.
+
+---
+
+## Architecture Note: Centralized Dispatch
+
+For this MVP, SignalBridge is architected as a **Single-Tenant Centralized Command Center**. 
+
+This means that *all* global distress signals received by the bot are currently routed to our single, centralized Slack workspace and Discord server. This design choice was made to demonstrate the core end-to-end triage technology for the hackathon without over-engineering complex SaaS dashboards.
+
+**Post-Hackathon Roadmap:** If scaled into a multi-tenant B2B product, we would build a Web Dashboard where independent Police Departments could log in and authenticate their own Slack workspaces via the Caspian SDK. SignalBridge would then dynamically route localized emergencies strictly to the respective jurisdiction's webhook, rather than our global command center.
 
 ---
 
