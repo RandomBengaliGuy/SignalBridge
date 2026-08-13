@@ -93,7 +93,7 @@ flowchart LR
 > **Architecture Note (Ingestion Scope)**: 
 > The architecture diagram above represents the complete SignalBridge ecosystem. Because the Caspian SDK natively unifies all communication channels into a single `on_message` webhook, our backend is already architecturally capable of ingesting distress signals via **SMS** and **Email**. 
 >
-> However, for the scope of this Hackathon MVP—and to ensure the highest reliability during live demonstrations—we have restricted the *Inbound Ingestion* layer strictly to **Telegram**. Outbound dispatching remains fully omnichannel (Slack, Discord, Email, and SMS). Expanding inbound ingestion to offline SMS is scheduled for Phase 2.
+> However, for the scope of this Hackathon MVP—and to ensure the highest reliability during live demonstrations—we have restricted the *Inbound Ingestion* layer strictly to **Telegram**. Outbound dispatching remains fully omnichannel (Slack, Discord, Email, and SMS). Expanding inbound ingestion to offline SMS will be done if scaling is needed.
 ---
 
 ## Platform-by-Platform Integration
