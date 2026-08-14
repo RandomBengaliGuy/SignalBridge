@@ -183,26 +183,41 @@ def handle_emergency(message):
         attachments = getattr(message, 'attachments', getattr(message, 'media', getattr(message, 'files', [])))
         if attachments:
             for attachment in attachments:
+                url = attachment.get('url') if isinstance(attachment, dict) else getattr(attachment, 'url', None)
                 filename = attachment.get('filename', attachment.get('name', '')) if isinstance(attachment, dict) else getattr(attachment, 'filename', getattr(attachment, 'name', ''))
                 file_type = attachment.get('type', attachment.get('content_type', attachment.get('mime_type', ''))) if isinstance(attachment, dict) else getattr(attachment, 'type', getattr(attachment, 'content_type', getattr(attachment, 'mime_type', '')))
                 
                 is_audio = False
-                if filename and filename.endswith((".ogg", ".oga", ".mp3", ".m4a", ".wav")):
+                if filename and filename.lower().endswith((".ogg", ".oga", ".mp3", ".m4a", ".wav", ".flac", ".webm")):
                     is_audio = True
-                elif file_type and ('audio' in file_type or 'voice' in file_type):
+                elif file_type and ('audio' in file_type.lower() or 'voice' in file_type.lower()):
                     is_audio = True
+                elif url and (".ogg" in url.lower() or ".oga" in url.lower() or "voice" in url.lower()):
+                    is_audio = True
+                    
+                if is_audio:
                     if not filename:
                         filename = "voice_note.ogg"
                         
-                if is_audio:
-                    url = attachment.get('url') if isinstance(attachment, dict) else getattr(attachment, 'url', None)
+                    if not url and 'file_id' in attachment:
+                        telegram_token = os.getenv("TELEGRAM_BOT_TOKEN")
+                        if telegram_token:
+                            file_info_url = f"https://api.telegram.org/bot{telegram_token}/getFile?file_id={attachment['file_id']}"
+                            try:
+                                resp = httpx.get(file_info_url, timeout=30.0)
+                                file_path = resp.json().get('result', {}).get('file_path')
+                                if file_path:
+                                    url = f"https://api.telegram.org/file/bot{telegram_token}/{file_path}"
+                            except Exception as e:
+                                print(f"Failed to fetch Telegram file URL: {e}")
+                                
                     if url:
                         if "api.telegram.orgfile" in url:
                             url = url.replace("api.telegram.orgfile", "api.telegram.org/file")
                         try:
                             os.makedirs("scratch", exist_ok=True)
                             audio_path = os.path.join("scratch", filename)
-                            resp = httpx.get(url, follow_redirects=True)
+                            resp = httpx.get(url, follow_redirects=True, timeout=30.0)
                             with open(audio_path, "wb") as f:
                                 f.write(resp.content)
                             transcription = transcribe_audio(audio_path)
@@ -220,7 +235,8 @@ def handle_emergency(message):
             raw_context += f" {text}"
 
         if not raw_context.strip():
-            client.send_message(channel_id, "[WARNING] SignalBridge activated, but no text or readable voice note was found. Please describe your emergency.")
+            debug_info = str(message.__dict__) if hasattr(message, "__dict__") else str(message)
+            client.send_message(channel_id, f"[WARNING] SignalBridge activated, but no text or readable voice note was found. Please describe your emergency.\n\n[DEBUG PAYLOAD]: {debug_info[:800]}")
             return
 
         if active_em and active_em.relay and active_em.relay.is_active:
