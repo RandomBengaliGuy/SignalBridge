@@ -48,3 +48,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 app.include_router(dispatch_router)
+
+@app.get("/")
+def health_check():
+    return {"status": "ok", "message": "SignalBridge is awake!"}
