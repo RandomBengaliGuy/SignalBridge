@@ -1,7 +1,7 @@
 # SignalBridge
 
 <div align="center">
-  <a href="INSERT_DEMO_VIDEO_LINK_HERE"><strong>Watch the Full Demo Video Here</strong></a>
+  <a href="https://drive.google.com/file/d/1Q5wz4hluygQbrd0BrKLgOwBox7XAzq0L/view?usp=sharing"><strong>Watch the Full Demo Video Here</strong></a>
   &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="https://t.me/caspian_signal_bridge_bot"><strong>Try the Live Telegram Bot Here!</strong></a>
 </div>
